@@ -1,0 +1,45 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace CMS.Controllers
+{
+    public class EmployeeController : Controller
+    {
+        // GET: EmployeeController
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        // GET: EmployeeController/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: EmployeeController/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: EmployeeController/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}
