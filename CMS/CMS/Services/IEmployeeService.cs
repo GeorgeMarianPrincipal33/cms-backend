@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace CMS.Services
 {
-    interface IEmployeeService
+    public interface IEmployeeService
     {
+        IEnumerable<Employee> GetEmployees();
+
         void AddEmployee(Employee employee);
 
         void DeleteEmployee(int id);
 
-        void SearchByName(string name);
+        IEnumerable<Employee> SearchByName(string name);
 
-        void SortByName(string name);
+        IEnumerable<Employee> SortByName();
     }
 }

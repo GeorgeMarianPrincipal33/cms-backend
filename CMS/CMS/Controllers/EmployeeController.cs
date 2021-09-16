@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CMS.Models;
+using CMS.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,37 +11,43 @@ namespace CMS.Controllers
 {
     public class EmployeeController : Controller
     {
-        // GET: EmployeeController
-        public ActionResult Index()
+        private readonly IEmployeeService employeeService;
+
+        public EmployeeController(IEmployeeService employeeService)
         {
-            return View();
+            this.employeeService = employeeService;
         }
 
-        // GET: EmployeeController/Details/5
-        public ActionResult Details(int id)
+        [HttpGet]
+        public IEnumerable<Employee> GetEmployees()
         {
-            return View();
+            return employeeService.GetEmployees();
         }
 
-        // GET: EmployeeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: EmployeeController/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public void AddEmployee(string name, string surname, string email, int gender, DateTime birthdate, string profileImage)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Employee newEmployee = new Employee() {Name = name, Surname = surname, Email = email, Gender = gender, Birthdate = birthdate, ProfileImage = profileImage };
+
+            employeeService.AddEmployee(newEmployee);
+        }
+        
+        [HttpPost]
+        public void RemoveEmployee(int id)
+        {
+            employeeService.DeleteEmployee(id);
+        }
+
+        [HttpGet]
+        public IEnumerable<Employee> SearchEmployee(string name)
+        {
+            return employeeService.SearchByName(name);
+        }
+
+        [HttpGet]
+        public IEnumerable<Employee> SortEmployees()
+        {
+            return employeeService.SortByName();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CMS.Models;
+﻿using CMS.Data;
+using CMS.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,24 +9,39 @@ namespace CMS.Services
 {
     public class EmployeeService : IEmployeeService
     {
+        private readonly ApplicationDbContext dbContext;
+
+        public EmployeeService(ApplicationDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        public IEnumerable<Employee> GetEmployees()
+        {
+            return dbContext.Employees.ToArray();
+        }
+
         public void AddEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            dbContext.Add(employee);
+            dbContext.SaveChanges();
         }
 
         public void DeleteEmployee(int id)
         {
-            throw new NotImplementedException();
+            var employee = dbContext.Employees.Find(id);
+            dbContext.Employees.Remove(employee);
+            dbContext.SaveChanges();
         }
 
-        public void SearchByName(string name)
+        public IEnumerable<Employee> SearchByName(string name)
         {
-            throw new NotImplementedException();
+            return dbContext.Employees.Where(employess => employess.Name.ToLower().Contains(name) || employess.Surname.ToLower().Contains(name));
         }
 
-        public void SortByName(string name)
+        public IEnumerable<Employee> SortByName()
         {
-            throw new NotImplementedException();
+            return dbContext.Employees.OrderBy(employee => employee.Name).ToArray();
         }
     }
 }
